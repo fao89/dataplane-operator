@@ -101,7 +101,6 @@ type NodeSection struct {
 
 	// ExtraMounts containing files which can be mounted into an Ansible Execution Pod
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default={}
 	ExtraMounts []storage.VolMounts `json:"extraMounts,omitempty"`
 }
 
@@ -122,7 +121,6 @@ type DeployStrategySection struct {
 type NetworkConfigSection struct {
 
 	// +kubebuilder:validation:Optional
-	// +kubebuilder:default=templates/net_config_bridge.j2
 	// Template - ansible j2 nic config template to use when applying node
 	// network configuration
 	Template string `json:"template,omitempty" yaml:"template,omitempty"`
