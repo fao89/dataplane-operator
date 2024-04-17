@@ -533,9 +533,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec := DefaultDataPlaneNodeSetSpec("edpm-compute")
 				nodeSetSpec["preProvisioned"] = true
 				DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should not have set the node specific ansible_user variable", func() {
 				secret := th.GetSecret(dataplaneSecretName)
@@ -577,10 +577,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec := DefaultDataPlaneNoNodeSetSpec(tlsEnabled)
 				nodeSetSpec["nodes"].(map[string]interface{})["edpm-compute-node-1"] = nodeOverrideSpec
 				nodeSetSpec["nodeTemplate"] = nodeTemplateOverrideSpec
-
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should have a node specific override that is different to the group", func() {
 				secret := th.GetSecret(dataplaneSecretName)
@@ -601,9 +600,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec := DefaultDataPlaneNodeSetSpec("edpm-compute")
 				nodeSetSpec["preProvisioned"] = true
 				DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should set the ctlplane_ip variable in the Ansible inventory secret", func() {
 				Eventually(func() string {
@@ -927,9 +926,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec := DefaultDataPlaneNodeSetSpec("edpm-compute")
 				nodeSetSpec["preProvisioned"] = true
 				DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should not have set the node specific ansible_user variable", func() {
 				secret := th.GetSecret(dataplaneSecretName)
@@ -972,9 +971,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec["nodes"].(map[string]interface{})["edpm-compute-node-1"] = nodeOverrideSpec
 				nodeSetSpec["nodeTemplate"] = nodeTemplateOverrideSpec
 
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should have a node specific override that is different to the group", func() {
 				secret := th.GetSecret(dataplaneSecretName)
@@ -995,9 +994,9 @@ var _ = Describe("Dataplane NodeSet Test", func() {
 				nodeSetSpec := DefaultDataPlaneNodeSetSpec("edpm-compute")
 				nodeSetSpec["preProvisioned"] = true
 				DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+				SimulateIPSetComplete(dataplaneIPSetName)
 				DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, nodeSetSpec))
 				CreateSSHSecret(dataplaneSSHSecretName)
-				SimulateIPSetComplete(dataplaneIPSetName)
 			})
 			It("Should set the ctlplane_ip variable in the Ansible inventory secret", func() {
 				Eventually(func() string {

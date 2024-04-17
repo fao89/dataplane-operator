@@ -178,6 +178,8 @@ func DefaultNetConfigSpec() map[string]interface{} {
 
 // SimulateIPSetComplete - Simulates the result of the IPSet status
 func SimulateIPSetComplete(name types.NamespacedName) {
+	ipset := DefaultIPSet(name)
+	th.CreateUnstructured(ipset)
 	Eventually(func(g Gomega) {
 		IPSet := &infrav1.IPSet{}
 		g.Expect(th.K8sClient.Get(th.Ctx, name, IPSet)).Should(Succeed())
@@ -192,12 +194,38 @@ func SimulateIPSetComplete(name types.NamespacedName) {
 				Gateway: &gateway,
 			},
 		}
+		if IPSet.Status.Conditions == nil {
+			IPSet.Status.Conditions = condition.Conditions{}
+		}
+		cl := condition.CreateList(condition.UnknownCondition(condition.ReadyCondition, condition.InitReason, condition.InitReason))
+		IPSet.Status.Conditions.Init(&cl)
+		IPSet.Status.Conditions.MarkTrue(condition.ReadyCondition, condition.ReadyMessage)
 		// This can return conflict so we have the gomega.Eventually block to retry
 		g.Expect(th.K8sClient.Status().Update(th.Ctx, IPSet)).To(Succeed())
 
 	}, th.Timeout, th.Interval).Should(Succeed())
 
 	th.Logger.Info("Simulated DB completed", "on", name)
+}
+
+func DefaultIPSet(name types.NamespacedName) map[string]interface{} {
+	return map[string]interface{}{
+
+		"apiVersion": "network.openstack.org/v1beta1",
+		"kind":       "IPSet",
+		"metadata": map[string]interface{}{
+			"name":      name.Name,
+			"namespace": name.Namespace,
+		},
+		"spec": map[string][]map[string]interface{}{
+			"networks": {{
+				"name":       "CtlPlane",
+				"fixedIP":    "172.20.12.76",
+				"subnetName": "ctlplane_subnet",
+			},
+			},
+		},
+	}
 }
 
 // Build OpenStackDataPlaneNodeSet struct and fill it with preset values

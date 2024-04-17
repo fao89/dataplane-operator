@@ -113,6 +113,11 @@ var _ = Describe("Dataplane Deployment Test", func() {
 			DeferCleanup(th.DeleteService, dataplaneServiceName)
 			DeferCleanup(th.DeleteService, dataplaneGlobalServiceName)
 			DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+			dataplaneIPSetName := types.NamespacedName{
+				Namespace: dataplaneNodeSetName.Namespace,
+				Name:      dataplaneNodeSetName.Name + "-node-1",
+			}
+			SimulateIPSetComplete(dataplaneIPSetName)
 			DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, DefaultDataPlaneNodeSetSpec(dataplaneNodeSetName.Name)))
 			DeferCleanup(th.DeleteInstance, CreateDataplaneDeployment(dataplaneDeploymentName, DefaultDataPlaneDeploymentSpec()))
 		})
@@ -284,6 +289,13 @@ var _ = Describe("Dataplane Deployment Test", func() {
 				},
 				"tlsEnabled": true,
 			}
+			dataplaneIPSetName := types.NamespacedName{
+				Namespace: alphaNodeSetName.Namespace,
+				Name:      alphaNodeSetName.Name + "-node-1",
+			}
+			SimulateIPSetComplete(dataplaneIPSetName)
+			dataplaneIPSetName.Name = betaNodeSetName.Name + "-node-1"
+			SimulateIPSetComplete(dataplaneIPSetName)
 			DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(alphaNodeSetName, DefaultDataPlaneNodeSetSpec(alphaNodeSetName.Name)))
 			DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(betaNodeSetName, betaNodeSetSpec))
 
@@ -477,6 +489,11 @@ var _ = Describe("Dataplane Deployment Test", func() {
 
 			DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
 
+			dataplaneIPSetName := types.NamespacedName{
+				Namespace: alphaNodeSetName.Namespace,
+				Name:      alphaNodeSetName.Name + "-node-1",
+			}
+			SimulateIPSetComplete(dataplaneIPSetName)
 			// Create only one nodeset
 			DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(alphaNodeSetName, DefaultDataPlaneNodeSetSpec(alphaNodeSetName.Name)))
 
@@ -598,6 +615,11 @@ var _ = Describe("Dataplane Deployment Test", func() {
 			// DefaultDataPlanenodeSetSpec comes with two mock services, one marked for deployment on all nodesets
 			// But we will not create them to test this scenario
 			DeferCleanup(th.DeleteInstance, CreateNetConfig(dataplaneNetConfigName, DefaultNetConfigSpec()))
+			dataplaneIPSetName := types.NamespacedName{
+				Namespace: dataplaneNodeSetName.Namespace,
+				Name:      dataplaneNodeSetName.Name + "-node-1",
+			}
+			SimulateIPSetComplete(dataplaneIPSetName)
 			DeferCleanup(th.DeleteInstance, CreateDataplaneNodeSet(dataplaneNodeSetName, DefaultDataPlaneNodeSetSpec(dataplaneNodeSetName.Name)))
 			DeferCleanup(th.DeleteInstance, CreateDataplaneDeployment(dataplaneDeploymentName, DefaultDataPlaneDeploymentSpec()))
 		})

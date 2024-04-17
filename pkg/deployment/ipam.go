@@ -49,7 +49,7 @@ func EnsureIPSets(ctx context.Context, helper *helper.Helper,
 	}
 
 	for _, s := range allIPSets {
-		if s.Status.Conditions.IsFalse(condition.ReadyCondition) {
+		if !s.Status.Conditions.IsTrue(condition.ReadyCondition) {
 			instance.Status.Conditions.MarkFalse(
 				dataplanev1.NodeSetIPReservationReadyCondition,
 				condition.RequestedReason, condition.SeverityInfo,

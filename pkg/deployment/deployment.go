@@ -148,7 +148,7 @@ func (d *Deployer) ConditionalDeploy(
 
 	}
 
-	if nsConditions.IsFalse(readyCondition) {
+	if !nsConditions.IsTrue(readyCondition) {
 		var ansibleEE *ansibleeev1.OpenStackAnsibleEE
 		_, labelSelector := dataplaneutil.GetAnsibleExecutionNameAndLabels(&foundService, d.Deployment.Name, d.NodeSet.Name)
 		ansibleEE, err = dataplaneutil.GetAnsibleExecution(d.Ctx, d.Helper, d.Deployment, labelSelector)
